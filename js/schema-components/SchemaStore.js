@@ -13,6 +13,10 @@ class SchemaStore extends StoreComponent
         const template = 
         `<div class='component__row'>
             <p class='component__label'><slot></p>
+        </div>
+        <div class='component__create'>
+            <input class='component__input' type='text' placeholder='schema'>
+            <button class='component__action--create'></button> 
         </div>`;
 
         super( { template } );
