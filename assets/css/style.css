@@ -137,6 +137,28 @@
     flex-direction: row;
     justify-content: flex-start;
 }
+.component__create {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.component__input {
+    flex-basis: 50%;
+}
+.component__action--create {
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    outline: none;
+    border-radius: 8px;
+    border: 2px solid rgba(255,255,255.0.5);
+    background-color: #6878a8;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('../img/icon_plus.svg');
+    box-shadow: inset -4px -4px 12px 0 rgba(255,255,255,.4);
+}
 .component__header {
     font-size: 14px;
     text-transform: uppercase;
