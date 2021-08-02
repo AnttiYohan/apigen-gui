@@ -13,6 +13,10 @@
     --white:  #FFFFFF;
     --red-tint: #FF6868;
     --blue-tint: #6898ff;
+    --color-action--remove:#a86878;
+    --color-action--create:#6878a8;
+    --color-action--edit: #5898a8;
+    --tool-view-bg: #333958;
     --editor-bg: #c8e8fa;
     --editor-field-bg: #e9eefd;
     --editor-border-color: #9298b2;
@@ -23,7 +27,7 @@
     --max-frame-width: 600px;
     --font-size-header: 14px;
     --font-size-text: 12px;
-
+    --action-diameter: 32px;
 }
 
 * {
@@ -148,16 +152,48 @@
 }
 .component__action--create {
     cursor: pointer;
-    width: 32px;
-    height: 32px;
+    width: var(--action-diameter);
+    height: var(--action-diameter);
     outline: none;
-    border-radius: 8px;
-    border: 2px solid rgba(255,255,255.0.5);
-    background-color: #6878a8;
+    border-radius: calc(var(--action-diameter) / 2);
+    border: 1px solid rgba(255,255,245.0.6);
+    background-color: var(--color-action--create);
     background-repeat: no-repeat;
     background-size: cover;
     background-image: url('../img/icon_plus.svg');
-    box-shadow: inset -4px -4px 12px 0 rgba(255,255,255,.4);
+    box-shadow: 
+    inset 0px -4px 12px 0 rgba(0 0 0 / 40%),
+    inset 0px 6px 12px -8px rgba(255 255 255 / 59%);
+}
+.component__action--remove {
+    cursor: pointer;
+    width: var(--action-diameter);
+    height: var(--action-diameter);
+    outline: none;
+    border-radius: calc(var(--action-diameter) / 2);
+    border: 1px solid rgba(255,255,245.0.6);
+    background-color: var(--color-action--remove);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('../img/icon-delete-duo.svg');
+    box-shadow: 
+    inset 0px -4px 12px 0 rgba(0 0 0 / 40%),
+    inset 0px 6px 12px -8px rgba(255 255 255 / 59%);
+}
+.component__action--edit {
+    cursor: pointer;
+    width: var(--action-diameter);
+    height: var(--action-diameter);
+    outline: none;
+    border-radius: calc(var(--action-diameter) / 2);
+    border: 1px solid rgba(255,255,245.0.6);
+    background-color: var(--color-action--edit);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('../img/icon_edit.svg');
+    box-shadow: 
+    inset 0px -4px 12px 0 rgba(0 0 0 / 40%),
+    inset 0px 6px 12px -8px rgba(255 255 255 / 59%);
 }
 .component__header {
     font-size: 14px;
