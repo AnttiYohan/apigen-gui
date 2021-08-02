@@ -1,4 +1,5 @@
 import { WCBase } from "./WCBase.js";
+import { ToolView } from './ToolView.js';
 
 /**
  * This is the MainView, applications main layout
