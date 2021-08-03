@@ -45,8 +45,34 @@ class SchemaEntry extends WCBase
             <h2 class='entry__title'>${this.mTitle}</h2>
             <button class='component__action--edit'></button>
             <button class='component__action--remove'></button>
-        </div>`);
-         
+        </div>
+        <div class='details'>
+            <table-store>Tables</table-store>
+        </div>`
+        );
+        
+        this.setupStyle(
+        `.details {
+            height: 0px;
+            overflow-y: hidden;
+            transition: height 300ms ease-out;
+        }
+        .details.open {
+            height: auto;
+        }`
+        );
+        /**
+         * Setup a click listener in the entry,
+         * in order to open/close the
+         * table store
+         */
+        this.mEntry   = this.shadowRoot.querySelector( '.entry' );
+        this.mDetails = this.shadowRoot.querySelector( '.details' );
+
+        this.mEntry.addEventListener( 'click', e =>
+        {
+            this.mDetails.classList.toggle( 'open' );
+        });
     }
 
     /**
