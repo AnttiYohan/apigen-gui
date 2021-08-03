@@ -1,12 +1,19 @@
 @font-face {
-    font-family: 'Baskerville Normal';
+    font-family: 'Georama';
     font-style: normal;
-    font-weight: normal;
-    src: local('Baskerville Normal'), url('baskvl.woff') format('woff');
+    font-weight: 100 900;
+    font-stretch: 75% 150%;
+    src: url('../font/Georama-VariableFont_wdth_wght.ttf');
+}
+@font-face {
+    font-family: 'Georama';
+    font-style: italic;
+    font-weight: 100 900;
+    font-stretch: 75% 150%;
+    src: url('../font/Georama-Italic-VariableFont_wdth_wght.ttf');
 }
 
 :root {
-
     --text-color: #222;
     --gray:   #656565;
     --light:  #E2E0E0;
@@ -27,15 +34,19 @@
     --max-frame-width: 600px;
     --font-size-header: 14px;
     --font-size-text: 12px;
-    --action-diameter: 32px;
+    --action-size: 32px;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Open Sans Condensed';
+    font-family: 'Georama';
+    font-size: 14px;
+    font-weight: 250;
+    font-stretch: 90%;
 }
+
 .button {
     cursor: pointer;
     color: #fff;
@@ -76,12 +87,13 @@
     width: 100%; 
     min-height: 48px;
     padding: 12px 6px;
-    background-color: #fff;
-    border-top: 1px solid rgba(0,0,0,0.25);
-    box-shadow: inset 0 -12px 18px -6px rgba(0,0,40,.25);
+    background-color: #446;
+    box-shadow: 
+    inset 0 -12px 18px -6px rgba(0, 0, 0, .5),
+    inset 0 12px 12px -4px rgba(255, 255, 255, .33);
 }
 .entry__title { 
-    flex-basis: 50%;
+    color: #fff;
     flex-grow: 1;
 }
 .entry__field {
@@ -98,15 +110,15 @@
     position: absolute;
     top: 0;
     right: 0;
-    border-radius: 12px;
-    width: 32px;
-    height: 32px;
+    border-radius: calc(var(--action-size) / 2);
+    width: var(--action-size);
+    height: var(--action-size);
     padding: 2px;
     margin-left: 4px;
     background-repeat: no-repeat;
     background-size: cover;
-    border: 3px solid rgba(255,80,80,0.7);
-    box-shadow: -4px 4px 4px -2 rgba(40,40,128,0.5);
+    border: 3px solid rgba(255, 80, 80, .7);
+    box-shadow: -4px 4px 4px -2 rgba(40, 40, 128, .5);
     transition: border-color .3s;
 }
 .action:hover {
@@ -147,53 +159,90 @@
     justify-content: space-between;
     align-items: center;
 }
-.component__input {
-    flex-basis: 50%;
-}
 .component__action--create {
     cursor: pointer;
-    width: var(--action-diameter);
-    height: var(--action-diameter);
+    width: var(--action-size);
+    height: var(--action-size);
     outline: none;
-    border-radius: calc(var(--action-diameter) / 2);
-    border: 1px solid rgba(255,255,245.0.6);
+    border-radius: calc(var(--action-size) / 2);
+    border: 1px solid rgba(255, 255, 240, .6);
     background-color: var(--color-action--create);
     background-repeat: no-repeat;
     background-size: cover;
     background-image: url('../img/icon_plus.svg');
     box-shadow: 
     inset 0px -4px 12px 0 rgba(0 0 0 / 40%),
-    inset 0px 6px 12px -8px rgba(255 255 255 / 59%);
+    inset 0px 6px 12px -8px rgba(255 255 255 / 59%),
+    0 -4px 6px -3px rgba(0, 0, 0, .5),
+    0 3px 4px -2px rgba(255, 255, 255, .3);
+    transition: border-color 300ms ease-in-out;
+}
+.component__action--create:focus {
+    border-color: rgba(32, 32, 32, .75);
+    box-shadow: 
+    inset 0px -4px 12px 0 rgba(0 0 0 / 40%),
+    inset 0px 6px 12px -8px rgba(255 255 255 / 59%),
+    inset 0 2px 2px 0 rgba(0 0 0 / 30%),
+    0 -4px 6px -3px rgba(0, 0, 0, .5),
+    0 1px 4px 1px rgba(255, 255, 255, .26);
 }
 .component__action--remove {
     cursor: pointer;
-    width: var(--action-diameter);
-    height: var(--action-diameter);
+    margin-left: 6px;
+    width: var(--action-size);
+    height: var(--action-size);
     outline: none;
-    border-radius: calc(var(--action-diameter) / 2);
-    border: 1px solid rgba(255,255,245.0.6);
+    border-radius: calc(var(--action-size) / 2);
+    border: 1px solid rgba(255, 255, 245, .6);
     background-color: var(--color-action--remove);
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: 70%;
+    background-position: 34% 50%;
     background-image: url('../img/icon-delete-duo.svg');
     box-shadow: 
     inset 0px -4px 12px 0 rgba(0 0 0 / 40%),
-    inset 0px 6px 12px -8px rgba(255 255 255 / 59%);
+    inset 0px 6px 12px -8px rgba(255 255 255 / 59%),
+    0 -4px 6px -3px rgba(0, 0, 0, .5),
+    0 1px 4px 1px rgba(255, 255, 255, .26);
+    transition: border-color 300ms ease-in-out;
+}
+.component__action--remove:focus {
+    border-color: rgba(32, 32, 32, .75);
+    box-shadow: 
+    inset 0px -4px 12px 0 rgba(0 0 0 / 40%),
+    inset 0px 6px 12px -8px rgba(255 255 255 / 59%),
+    inset 0 2px 2px 0 rgba(0 0 0 / 30%),
+    0 -4px 6px -3px rgba(0, 0, 0, .5),
+    0 1px 4px 1px rgba(255, 255, 255, .26);
 }
 .component__action--edit {
     cursor: pointer;
-    width: var(--action-diameter);
-    height: var(--action-diameter);
+    margin-left: 6px;
+    width: var(--action-size);
+    height: var(--action-size);
     outline: none;
-    border-radius: calc(var(--action-diameter) / 2);
-    border: 1px solid rgba(255,255,245.0.6);
+    border-radius: calc(var(--action-size) / 2);
+    border: 1px solid rgba(255, 255, 245, .6);
     background-color: var(--color-action--edit);
     background-repeat: no-repeat;
-    background-size: cover;
-    background-image: url('../img/icon_edit.svg');
+    background-size: 68%;
+    background-position: 63% 40%;
+    background-image: url('../img/icon_edit.svg');    
     box-shadow: 
     inset 0px -4px 12px 0 rgba(0 0 0 / 40%),
-    inset 0px 6px 12px -8px rgba(255 255 255 / 59%);
+    inset 0px 6px 12px -8px rgba(255 255 255 / 59%),
+    0 -4px 6px -3px rgba(0, 0, 0, .5),
+    0 1px 4px 1px rgba(255, 255, 255, .26);
+    transition: border-color 300ms ease-in-out;
+}
+.component__action--edit:focus {
+    border-color: rgba(32, 32, 32, .75);
+    box-shadow: 
+    inset 0px -4px 12px 0 rgba(0 0 0 / 40%),
+    inset 0px 6px 12px -8px rgba(255 255 255 / 59%),
+    inset 0 2px 2px 0 rgba(0 0 0 / 30%),
+    0 -4px 6px -3px rgba(0, 0, 0, .5),
+    0 1px 4px 1px rgba(255, 255, 255, .26);
 }
 .component__header {
     font-size: 14px;
@@ -294,8 +343,6 @@
 
 .component__label {
     font-size: 14px;
-    color: #222;
-    font-weight: 200;
     padding: 0;    
 }
 .component__label.required {
@@ -310,14 +357,31 @@
     background-image: none;
 }
 .component__input {
-    width: 100%;
-    border: 1px solid var(--grey, #bcbcbc);
+    --uptaken-width: calc(var(--action-size) + 8px);
+    border-top: 2px solid rgba(255, 255, 255, .5);
+    border-bottom: 2px solid rgba(0, 0, 0, .2);
+    border-left: 2px solid rgba(255, 255, 255, .33);
+    border-right: 2px solid rgba(255, 255, 255, .33);
+    flex-basis: calc(100% - var(--uptaken-width));
+    outline: none;
     padding: 5px 4px;
     border-radius: 2px;
     font-size: var(--font-size-text, 12px);
     font-weight: 200;
     color: #222;
-    box-shadow: 0 1px 6px 1px rgba(0,0,0,0.1);
+    box-shadow: inset 0 -8px 10px -4px rgba(0, 0, 0, .2);
+    transition: border-color 250ms ease-in;
+}
+.component__input:active {
+    border-width: 2px;
+    border-color: #444;
+}
+.component__input:focus {
+    border-width: 2px;
+    border-color: rgba(128, 32, 72, .57);
+}
+.component__input:active {
+    border-color: #444;
 }
 .component__input.type--number {
     width: 64px;
