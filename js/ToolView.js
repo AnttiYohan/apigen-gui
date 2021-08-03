@@ -29,6 +29,7 @@ class ToolView extends WCBase
             display: flex;
             flex-direction: column;
             max-width: 250px;
+            min-width: 200px;
             min-height: 100vh;
             overflow-x: hidden;
             background-color: #777;    
