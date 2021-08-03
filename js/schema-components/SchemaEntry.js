@@ -1,4 +1,5 @@
 import { WCBase } from '../WCBase.js';
+import { TableStore } from '../table-components/TableStore.js';
 
 /**
  * This is an singluar entry element
