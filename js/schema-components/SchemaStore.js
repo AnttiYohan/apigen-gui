@@ -11,15 +11,23 @@ class SchemaStore extends StoreComponent
     constructor()
     {
         const template = 
-        `<div class='component__row'>
-            <p class='component__label'><slot></p>
-        </div>
-        <div class='component__create'>
+       `<div class='component__create'>
             <input class='component__input' type='text' placeholder='schema'>
             <button class='component__action--create'></button> 
         </div>`;
 
-        super( { template } );
+        const style = 
+        `.component--root {
+            padding: 0;
+        }
+        .component__row {
+            padding: 8px;
+        }
+        .component__create {
+            padding: 8px;
+        }`
+
+        super( { template, style } );
 
         /**
          * @property currentProduct
@@ -46,40 +54,17 @@ class SchemaStore extends StoreComponent
             const model = 
             [
                 {
-                    prop: 'name',
+                    prop: 'title',
                     type: 'string',
                     empty: 'false'
                 },
                 {
-                    prop: 'userId',
+                    prop: 'id',
                     type: 'number',
-                    empty: 'false'
-                },
-                {
-                    prop: 'productCategory',
-                    type: 'string',
-                    empty: 'false'
-                },
-                {
-                    prop: 'systemProductId',
-                    type: 'number',
-                    empty: 'false'
-                },
-                {
-                    prop: 'amount',
-                    type: 'number',
-                    empty: 'false'
-                },
-                {
-                    prop: 'measureUnit',
-                    type: 'string',
                     empty: 'false'
                 }
             ];
 
-            /**
-             * Validate
-             */
             if ( validate( entry, model ) )
             {
                 result.push( entry );
@@ -101,6 +86,10 @@ class SchemaStore extends StoreComponent
         return '';
     }
     
+    addSchema( schema )
+    {
+        this.addEntry( new SchemaEntry( schema ) );
+    }
     // ----------------------------------------------
     // - Lifecycle callbacks
     // ----------------------------------------------
@@ -109,6 +98,31 @@ class SchemaStore extends StoreComponent
     {
         console.log( '<schema-store> connected' );
         this.emit( 'schema-store-connected' );
+
+        const entries = [
+            {
+                'title': 'apigen_db',
+                'id': 1
+            },
+            {
+                'title': 'kitchen_db',
+                'id': 2
+            },
+            {
+                'title': 'wordpress_db',
+                'id': 3
+            },
+            {
+                'title': 'user-api',
+                'id': 4
+            }
+        ];
+
+        for ( const schema of entries )
+        {
+            this.addSchema( schema );
+        }
+
     }
 }
 
