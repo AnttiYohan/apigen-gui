@@ -33,10 +33,16 @@ class StoreComponent extends WCBase
 
         this.setupStyle
         (`
-        .component { background-color: #777; border-radius: 4px; box-shadow: 0 8px 12px -2px rgba(20,0,0,.25); }
         ${'style' in options ? options.style : ''}
-        .button { display: block; margin: auto; }
-        .store { display: flex; flex-direction: column; }
+        .button { 
+            display: block; 
+            margin: auto; 
+        }
+        .store { 
+            display: flex; 
+            flex-direction: column; 
+            margin-top: 16px;
+        }
         `);
 
         this.mFrame         = this.shadowRoot.querySelector( '.component--root' );
