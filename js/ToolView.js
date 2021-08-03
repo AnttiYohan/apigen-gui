@@ -1,4 +1,5 @@
 import { WCBase } from "./WCBase.js";
+import { SchemaStore } from './schema-components/SchemaStore.js';
 
 /**
  * This is the ToolView, container of app menus
@@ -28,7 +29,7 @@ class ToolView extends WCBase
             display: flex;
             flex-direction: column;
             max-width: 250px;
-            height: auto;
+            min-height: 100vh;
             overflow-x: hidden;
             background-color: #777;    
         }
