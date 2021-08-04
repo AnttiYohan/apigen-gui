@@ -35,6 +35,14 @@
     --font-size-header: 14px;
     --font-size-text: 12px;
     --action-size: 32px;
+    --toggle-width: 48px;
+    --toggle-height: 28px;
+    --toggle-border: 3px;
+    --toggle-border-color: #33395a;
+    --toggle-off-color: #798298;
+    --toggle-on-color: #ff899f;
+    --toggle-knob-color: #e9eefd;
+
 }
 
 * {
@@ -419,4 +427,51 @@
     width: 100%;
     display: grid;
     grid-template-columns: 50% 50%;
+}
+
+.toggle__input {
+    width: 0;
+    height: 0;
+    appearance: none;
+}
+.toggle__label {
+    position: relative;
+    width: var(--toggle-width);
+    height: var(--toggle-height);
+    border: var(--toggle-border) solid var(--toggle-border-color);
+    border-radius: calc(var(--toggle-height) / 2);
+    background-color: var(--toggle-off-color);
+    box-shadow:
+    inset 0 -6px 10px -4px rgba(0, 0, 0, .25),
+    inset 0  6px 10px -4px rgba(255, 255, 255, .33),
+    inset 0  2px 1px -1px rgba(0, 0, 0, .2);
+    transition: background-color 500ms ease;
+    outline: none;
+}
+.toggle__input:focus ~.toggle__label {
+    outline: 1px dashed rgba(255, 255, 255, .33);
+}
+.toggle__input:checked ~ .toggle__label {
+    background-color: var(--toggle-on-color);
+}
+.toggle__label::after {
+    --switch-leap: calc(var(--toggle-width) - var(--size));
+    --borders: calc(var(--toggle-border) * 2);
+    --size: calc(var(--toggle-height) - var(--borders) * 2);
+    content: '';
+    position: absolute;
+    top: var(--borders);
+    left: var(--borders);
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    background-color: var(--toggle-knob-color);
+    box-shadow: 
+    inset 0 -6px 10px -4px rgba(64, 0, 0, .25),
+    0 2px 4px -2px rgba(0, 0, 0, .25);
+    transform: translate3d(var(--switch-leap), 0, 0);
+    transition: transform 200ms ease;
+}
+.toggle__input:checked ~ .toggle__label::after {
+    transform: translate3d(0, 0, 0);
 }
