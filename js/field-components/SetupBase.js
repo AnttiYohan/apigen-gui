@@ -29,6 +29,20 @@ class SetupBase extends WCBase
         {
             this.mTitle = this.dataset.title ? this.dateset.title : 'unset';
         }
+
+        /**
+         * Setup the minimun height
+         */
+        let min_height = 32;
+
+        if ( 
+            'min_height' in options && 
+            typeof options.min_height === 'number' && 
+            options.min_height >= 32
+        )
+        {
+            min_height = options.min_height;
+        }
         // -----------------------------------------------
         // - Setup ShadowDOM and possible local styles
         // -----------------------------------------------
@@ -48,15 +62,75 @@ class SetupBase extends WCBase
             position: relative;
             display: flex;
             align-items: center;
-            min-height: 32px;
+            min-height: ${min_height}px;
+            min-width: 195px;
+            max-width: 280px;
+            justify-content: space-between;
         }
         .setup__title {
             color: #fff;
-            min-width: 98px;
+            min-width: 40px;
+            width: 64px;
             text-align: center;
-            font-size: 12px;
-            font-stretch: 70%;
+            font-size: 14px;
             font-weight: 350;
+        }
+        .setup__inline {
+            display: inline-flex;
+            flex-direction: row;
+        }
+        .setup__prop {
+            display: inline;
+            margin: 0 4px;
+            color: #fff;
+            font-size: 12px;
+        }
+        .setup__input--number {
+            width: 64px;
+            padding: 4px;
+            height: 20px;
+            color: #222;
+            background-color: breachedalmond;
+            border: 0 solid transparent;
+            border-radius: 2px;
+            outline: 2px dashed transparent;
+            outline-offset: 1px;
+            box-shadow:
+            inset 0 -6px 8px -4px rgba(64, 0, 32, 0.3),
+            0 4px 8px -3px rgba(240, 240, 255, 0.3);
+            transition: outline-color 100ms, outline-offset 300ms ease;
+        }
+        .setup__input--text {
+            max-width: 150px;
+            min-width: 64px;
+            padding: 4px;
+            height: 20px;
+            color: #222;
+            background-color: breachedalmond;
+            border: 0 solid transparent;
+            border-radius: 2px;
+            outline: 2px dashed transparent;
+            outline-offset: 1px;
+            box-shadow:
+            inset 0 -6px 8px -4px rgba(64, 0, 32, 0.3),
+            0 4px 8px -3px rgba(240, 240, 255, 0.3);
+            transition: outline-color 100ms, outline-offset 300ms ease;
+        }
+        .setup__input--number:focus {
+            outline-color: rgba(255, 128, 128, 0.5);
+            outline-offset: 0;
+        }
+        .setup__input--text:focus {
+            outline-color: rgba(255, 128, 128, 0.5);
+            outline-offset: 0;
+        }
+        .setup__stack {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-self: stretch;
+            align-items: flex-end;
+            margin-right: 4px;
         }
         ${'style' in options ? options.style : ''}`);
 
