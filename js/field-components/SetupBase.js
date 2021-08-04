@@ -1,4 +1,5 @@
 import { WCBase } from '../WCBase.js';
+import { ToggleSwitch } from '../ToggleSwitch.js';
 
 /**
  * This is an base class for a selector
@@ -17,8 +18,17 @@ class SetupBase extends WCBase
         /**
          * Entry members
          */
-        this.mTitle = this.dataset.title;
+        this.mTitle = null;
+        
+        if ( 'title' in options )
+        {
+            this.mTitle = options.title;
+        }
 
+        if ( ! this.mTitle )
+        {
+            this.mTitle = this.dataset.title ? this.dateset.title : 'unset';
+        }
         // -----------------------------------------------
         // - Setup ShadowDOM and possible local styles
         // -----------------------------------------------
@@ -29,10 +39,7 @@ class SetupBase extends WCBase
         <div class='setup'>
             <p class='setup__title'>${this.mTitle}</p>
             ${'template' in options ? options.template : ''}
-            <div class='setup__toggle'>
-                <input class='toggle__input' type='checkbox' id='state'>
-                <label class='toggle__label' for='state'></label>
-            </div>
+            <toggle-switch data-hide='true'></toggle-switch>
         </div>`
         );
         
@@ -51,17 +58,9 @@ class SetupBase extends WCBase
             font-stretch: 70%;
             font-weight: 350;
         }
-        .setup__toggle {
-            border-width: 0;
-            border-bottom: 2px solid transparent;
-            transition: border-color 250ms ease;
-        }
-        .setup__toggle:focus-within {
-            border-bottom-color: rgb(255, 180, 220);
-        }
         ${'style' in options ? options.style : ''}`);
 
-        this.mStateInput = this.shadowRoot.getElementById( 'state' );
+        this.mStateInput = this.shadowRoot.querySelector( 'toggle-switch' );
 
         this.shadowRoot.addEventListener( 'keyup', e => this.handleKeys( e ) );
     }
@@ -86,7 +85,7 @@ class SetupBase extends WCBase
     
     get state()
     {
-        return this.mStateInput.checked;
+        return this.mStateInput.value;
     }
 
     set state( value )
