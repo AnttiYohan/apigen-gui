@@ -7,7 +7,7 @@ class TypeSelector extends SelectorBase
 {
     constructor()
     {
-        list = [
+        const list = [
 
             'int',
             'bit',
@@ -21,7 +21,7 @@ class TypeSelector extends SelectorBase
             'mediumtext'
 
         ];
-        
+
         super({ list });
     }
 
