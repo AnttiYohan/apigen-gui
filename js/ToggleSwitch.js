@@ -7,6 +7,11 @@ class ToggleSwitch extends WCBase
 {
     constructor()
     {
+        super();
+
+        const pos  = this.dataset.position === 'r' ? 'row' : 'row-reverse';
+        const hide = this.dataset.hide === 'true' ? true : false;
+
         this.attachShadow( { mode: 'open' } );
         this.setupTemplate(
        `<link rel='stylesheet' href='assets/css/style.css'>
@@ -15,18 +20,18 @@ class ToggleSwitch extends WCBase
                 <input class='toggle__input' type='checkbox'>
                 <span class='toggle__slider'></span>
             </label>
-            <p class='toggle__header'><slot></p>
-        </div>`
-        );
+            ${hide ? '' : '<p class="toggle__header"><slot></p>'}
+        </div>`);
         
         this.setupStyle(
         `.toggle {
+            display: flex;
+            flex-direction: ${pos};
             position: relative;
+            width: fit-content;
         }
         .toggle__header {
-            position: absolute;
-            top: -6px;
-            left: 4px;
+            padding: 4px;
             font-size: 10px;
             color: #fff;
         }`);
