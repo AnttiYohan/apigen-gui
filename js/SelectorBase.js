@@ -11,7 +11,7 @@ class SelectorBase extends WCBase
 
         let html   = '';
         this.mMode = '';
-
+        this.mItemHeight = 24;
         let selectedValue = '';
         if ( 'list' in options )
         {
@@ -21,8 +21,9 @@ class SelectorBase extends WCBase
 
             for ( const item of options.list )
             {
-                const classList = `selector__item${index === selectedIndex ? ' ' + selectedValue : ''}`;
+                const classList = `selector__item${index === selectedIndex ? ' selected' : ''}`;
                 html += `<li class='${classList}' data-enum='${item}'>${item}</li>` + '\n';
+                index++;
             }
 
             this.mMode = 'list';
@@ -85,7 +86,7 @@ class SelectorBase extends WCBase
         }
         .selector__item {
             cursor: pointer;
-            height: 24px;
+            height: ${this.mItemHeight}px;
             transition: background-color 150ms ease, color 150ms ease;
         }
         .selector__item.selected {
@@ -114,7 +115,7 @@ class SelectorBase extends WCBase
         this.mSelector  = this.shadowRoot.querySelector( '.selector' );
         this.mCurrent   = this.shadowRoot.querySelector( '.selector__selected' );
         this.mOptions   = this.shadowRoot.querySelector( '.selector__list' );
-
+        this.mPointer   = this.shadowRoot.querySelector( '.selector__pointer' );
         this.mOptionArray = Array.from( this.mOptions.querySelectorAll( '.selector__item' ) );
         
         if ( this.mMode === 'list' )
@@ -228,8 +229,7 @@ class SelectorBase extends WCBase
         let index     = 0;
         let found     = false;
         const length  = this.mOptionArray.length - 1;
-        const pointer = this.mOptions.querySelector( '.pointer' );
-
+        
         for ( const elem of this.mOptionArray )
         {
             if ( this.mMode === 'template' )
@@ -263,7 +263,7 @@ class SelectorBase extends WCBase
             }
             else this.mOptionArray[ newIndex ].classList.add( 'selected' );
 
-            pointer.style.transform = `translate3d(0, ${newIndex*24}px, 0)`;
+            this.mPointer.style.transform = `translate3d(0, ${newIndex*this.mItemHeight}px, 0)`;
         }
     }
 
@@ -272,8 +272,7 @@ class SelectorBase extends WCBase
         let index     = 0;
         let found     = false;
         const length  = this.mOptionArray.length - 1;
-        const pointer = this.mOptions.querySelector( '.pointer' );
-
+    
         for ( const elem of this.mOptionArray )
         {
             if ( this.mMode === 'template' )
@@ -306,7 +305,7 @@ class SelectorBase extends WCBase
             }
             else this.mOptionArray[ newIndex ].classList.add( 'selected' );
 
-            pointer.style.transform = `translate3d(0, ${newIndex*24}px, 0)`;
+            this.mPointer.style.transform = `translate3d(0, ${newIndex*this.mItemHeight}px, 0)`;
         }
     }
 }
