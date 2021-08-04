@@ -9,31 +9,25 @@ class AutoincSetup extends SetupBase
     constructor( options = {} )
     {
         const template =
-        `<input class='autoinc__step' type='number'>`;
-
-        const style = 
-        `.autoinc__step {
-            width: 40px;
-            padding: 4px;
-            min-height: 32px;
-            outline: none;
-            border-bottom: 2px solid transparent;
-            box-shadow:
-            inset 0 -6px 8px -4px rgba(64, 0, 32, 0.3);
-            transition: border-botton-color 200ms ease;
-        }
-        .autoinc__step:focus {
-            border-bottom-color: rgba(255, 250, 240, .67);
-        }`;
+       `<div class='setup__stack'>
+            <div class='setup__inline'>
+                <p class='setup__prop'>step</p>
+                <input class='setup__input--number autoinc__step' type='number'>
+            </div>
+            <div class='setup__inline'>
+                <p class='setup__prop'>offset</p>
+                <input class='setup__input--number autoinc__offset' type='number'>
+            </div>
+        </div>`;
 
         super({
             title: 'autoinc',
             template,
-            style
+            min_height: 48
         });
 
-
-        this.mStepInput = this.shadowRoot.querySelector( '.autoinc__step' );
+        this.mStepInput   = this.shadowRoot.querySelector( '.autoinc__step' );
+        this.mOffsetInput = this.shadowRoot.querySelector( '.autoinc__offset' );
     }
 
     /**
@@ -46,18 +40,45 @@ class AutoincSetup extends SetupBase
         return this.mStepInput.value;
     }
 
-    set step( value )
+
+    /**
+     * Return the offset value
+     * 
+     * @return {string}
+     */
+    get offset()
     {
-        this.mStepInput.value = value;
+        return this.mOffsetInput.value;
     }
 
+
+    /**
+     * Set the step value
+     */
+    set step( value )
+    {
+        if ( typeof value === 'number' ) this.mStepInput.value = value;
+    }
+
+    /**
+     * Set the step value
+     */
+    set offset( value )
+    {
+        if ( typeof value === 'number' ) this.mOffsetInput.value = value;
+    }
+
+    /**
+     * Retrieve total state
+     */
     get value()
     {
         return {
 
-            title: this.title,
-            state: this.state,
-            step:  this.step
+            title:  this.title,
+            state:  this.state,
+            step:   this.step,
+            offset: this.offset
 
         }
     }
