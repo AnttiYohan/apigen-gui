@@ -37,6 +37,13 @@ class ToggleSwitch extends WCBase
         }`);
                 
         this.mInput = this.shadowRoot.querySelector( '.toggle__input' );
+        this.shadowRoot.addEventListener( 'keypress', e => 
+        {
+            if ( e.keyCode === this.KEY_ENTER )
+            {
+                this.mInput.checked = ! this.mInput.checked;
+            }
+        });
     }
 
 
