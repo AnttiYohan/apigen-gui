@@ -51,6 +51,7 @@ class MultiEntry extends WCBase
             flex-direction: ${pos};
             position: relative;
             min-height: 32px;
+            width: 210px;
         }
         .entry__inline {
             display: flex;
@@ -74,19 +75,15 @@ class MultiEntry extends WCBase
             outline-offset: 1px;
         }
         .entry__store {
+            margin-top: 8px;
             display: flex;
             flex-direction: ${dir};
             flex-wrap: ${wrap};
         }`);
            
-        let focus          = false;
         const entryInput   = this.shadowRoot.querySelector( '.entry__input' );
         const createButton = this.shadowRoot.querySelector( '.component__action--create' );
         
-        createButton.addEventListener( 'focus', e => 
-        {
-            focus = true;
-        });
         createButton.addEventListener( 'click', e => 
         {
             this.createEntry( entryInput.value );
@@ -94,7 +91,7 @@ class MultiEntry extends WCBase
 
         this.shadowRoot.addEventListener( 'keypress', e => 
         {
-            if ( focus && e.keyCode === this.KEY_ENTER )
+            if ( e.keyCode === this.KEY_ENTER )
             {
                 this.createEntry( entryInput.value );
             }
@@ -107,7 +104,10 @@ class MultiEntry extends WCBase
     {
         if ( value && typeof value === 'string' && value.length )
         {
-            this.mStore.appendChild( new EntryItem( value ) );
+            if ( ! this.contains( value ) )
+            {
+                this.mStore.appendChild( new EntryItem( value ) );
+            }
         }
     }
 
@@ -128,6 +128,22 @@ class MultiEntry extends WCBase
         return result.length ? result : null;
     }
 
+    /**
+     * Checks if the param 'value' is present at
+     * any child item
+     * 
+     * @param  {string}  value 
+     * @return {boolean} 
+     */
+    contains( value )
+    {
+        for ( const item of this.mStore.children )
+        {
+            if ( item.value === value ) return true;
+        }
+
+        return false;
+    }
     // ----------------------------------------------
     // - Lifecycle callbacks
     // ----------------------------------------------
