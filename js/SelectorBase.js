@@ -5,41 +5,90 @@ import { WCBase } from './WCBase.js';
  */
 class SelectorBase extends WCBase
 {
-    constructor( options )
+    constructor( options = {} )
     {
         super();
 
-        let html   = '';
-        this.mMode = '';
         this.mItemHeight = 24;
-        let selectedValue = '';
-        if ( 'list' in options )
-        {
-            let index = 0;
-            const selectedIndex = 'selected' in options ? options.selected : 0;
-            selectedValue = options.list[ selectedIndex ];
+        let html         = '';
+        let current      = `<p class='selector__selected'></p>`;
+        const items      = [];
 
+        /**
+         * Check if a list is passed in options, 
+         * and that it has some content
+         */
+        if ( 'list' in options && Array.isArray( options.list ) && options.list.length )
+        {
             for ( const item of options.list )
+            {
+                items.push( item );
+            } 
+        }
+        else 
+        {
+            const group = this.dataset.group;
+    
+            /**
+             * Try to parse the item group
+             */
+            if ( group )
+            {
+                let parsed;
+                try 
+                {
+                    parsed = JSON.parse( group );
+                }
+                catch ( error )
+                {
+                    console.log( `SelectorBase group parse error: ${error}` );
+                }
+
+                if ( parsed && Array.isArray( parsed ) )
+                {
+                    for ( const item of parsed )
+                    {
+                        items.push( item );
+                    }
+                }
+            }
+        }
+
+        if ( items.length )
+        {
+            const selectedIndex = 'selected' in options ? options.selected : 0;
+            let   selectedValue = items[ selectedIndex ];
+            let   index         = 0;
+            
+            for ( const item of items )
             {
                 const classList = `selector__item${index === selectedIndex ? ' selected' : ''}`;
                 html += `<li class='${classList}' data-enum='${item}'>${item}</li>` + '\n';
                 index++;
             }
 
-            this.mMode = 'list';
-        }
-        else
-        if ( 'template' in options )
-        {
-            html = options.template;
-            this.mMode = 'template';
+            current = `<p class='selector__selected'>${selectedValue}</p>`;        
         }
 
-        let current = `<p class='selector__selected'>${selectedValue}</p>`;
-
+        /**
+         * Check if a 'template for the selected (current) item'
+         * was passed in the options.
+         * If it is present, use it in the current section
+         */
         if ( 'template_selected' in options )
         {
             current = options.template_selected;
+        }
+
+        /**
+         * Check if a left-value is present in the options.
+         * The left value is used for horizontal positioning
+         * in relation to the parent element
+         */
+        let left = 0;
+        if ( 'left' in options && typeof options.left === 'number' )
+        {
+            left = options.left;
         }
         // -----------------------------------------------
         // - Setup ShadowDOM and possible local styles
@@ -58,12 +107,16 @@ class SelectorBase extends WCBase
         
         this.setupStyle(
         `.selector {
+            cursor: pointer;
             width: 96px;
             min-height: 32px;
             position: relative;
             outline: none;
             border: 2px solid transparent;
             transition: border-color 300ms ease;
+            background-repeat: no-repeat;
+            background-position-x: right;
+            background-image: url('assets/img/icon_undo.svg');
         }
         .selector:focus {
             border-color: rgba(255, 255, 255, .67);
@@ -74,12 +127,14 @@ class SelectorBase extends WCBase
         }
         .selector__list {
             position: absolute;
+            padding: 8px 4px 16px 4px;
             display: none;
             z-index: 1;
-            left: 0;
+            left: ${left}px;
             top: -32px;
-            width: 128px;
-            background-color: #643;
+            background-color: #446;
+            border-radius: 24px;
+            border: 6px solid #aac;
         }
         .selector__list.open {
             display: block;
@@ -116,25 +171,7 @@ class SelectorBase extends WCBase
         this.mCurrent   = this.shadowRoot.querySelector( '.selector__selected' );
         this.mOptions   = this.shadowRoot.querySelector( '.selector__list' );
         this.mPointer   = this.shadowRoot.querySelector( '.selector__pointer' );
-        this.mOptionArray = Array.from( this.mOptions.querySelectorAll( '.selector__item' ) );
         
-        if ( this.mMode === 'list' )
-        {
-            const handleClick = e => {
-
-                e.preventDefault();
-                e.stopPropagation();
-                console.log( `Option clicked: ${e.target.dataset.enum}` );
-                this.mCurrent.textContent = e.target.dataset.enum;
-                this.mOptions.classList.remove( 'open' );
-
-            };
-            for ( const elem of this.mOptionArray )
-            {
-                elem.addEventListener( 'click', e => handleClick( e ) );
-            }
-        }
-
         this.mSelector.addEventListener( 'click', e => 
         {
             this.mOptions.classList.toggle( 'open' );    
@@ -150,6 +187,12 @@ class SelectorBase extends WCBase
                 {
                     if ( this.isOpen() )
                     {
+                        const current = this.getSelected();
+                        if ( current )
+                        {
+                            this.mCurrent.textContent = current;
+                        }
+
                         this.mOptions.classList.remove( 'open' );
                     }
                     else this.open();
@@ -173,6 +216,24 @@ class SelectorBase extends WCBase
             }
         };
 
+        /*
+        this.mSelector.addEventListener( 'focusout', e =>
+        {
+            // - check focus
+            console.log( `SelectorBase focusout, t: ${e.target.classList}`);
+
+            // - has focus within?
+            const res = this.shadowRoot.querySelectorAll( ':focus-within' );
+
+            // -
+            console.log( `Focus within amt: ${res.length}`);
+
+            if ( res.length === 0 )
+            {
+                this.mOptions.classList.remove( 'open' );
+            }
+        });*/
+
         this.mSelector.addEventListener( 'focus', e => 
         {
             focus = true;
@@ -190,6 +251,15 @@ class SelectorBase extends WCBase
         this.shadowRoot.addEventListener( 'keyup', e => handleKeyPress( e ) );
     }
 
+    handleClick( e ) 
+    {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log( `Option clicked: ${e.target.dataset.enum}` );
+        this.mCurrent.textContent = e.target.dataset.enum;
+        this.mOptions.classList.remove( 'open' );
+    }
+
     isOpen()
     {
         return this.mOptions.classList.contains( 'open' );
@@ -204,21 +274,10 @@ class SelectorBase extends WCBase
     {
         for ( const elem of this.mOptionArray )
         {
-            if ( this.mMode === 'template' )
+            if ( elem.classList.contains( 'selected' ) )
             {
-                if ( elem.selected )
-                {
-                    return elem.value;
-                }
+                return elem.dataset.enum;
             }
-            else 
-            {
-                if ( elem.classList.contains( 'selected' ) )
-                {
-                    return elem.dataset.enum;
-                }
-            }
-
         }
 
         return null;
@@ -232,16 +291,6 @@ class SelectorBase extends WCBase
         
         for ( const elem of this.mOptionArray )
         {
-            if ( this.mMode === 'template' )
-            {
-                if ( elem.selected )
-                {
-                    found = true;
-                    elem.selected = false;
-                    break;
-                }
-            }
-            else
             if ( elem.classList.contains( 'selected' ) )
             {
                 found = true;
@@ -256,13 +305,7 @@ class SelectorBase extends WCBase
         if ( found )
         {
             const newIndex = index < length ? index + 1 : 0;
-
-            if ( this.mMode === 'template' )
-            {
-                this.mOptionArray[ newIndex ].selected = true;
-            }
-            else this.mOptionArray[ newIndex ].classList.add( 'selected' );
-
+            this.mOptionArray[ newIndex ].classList.add( 'selected' );
             this.mPointer.style.transform = `translate3d(0, ${newIndex*this.mItemHeight}px, 0)`;
         }
     }
@@ -275,23 +318,12 @@ class SelectorBase extends WCBase
     
         for ( const elem of this.mOptionArray )
         {
-            if ( this.mMode === 'template' )
-            {
-                if ( elem.selected )
-                {
-                    found = true;
-                    elem.selected = false;
-                    break;
-                }
-            }
-            else
             if ( elem.classList.contains( 'selected' ) )
             {
                 found = true;
                 elem.classList.remove( 'selected' );
                 break;
             }
-
             index++;
         }
 
@@ -299,14 +331,19 @@ class SelectorBase extends WCBase
         if ( found )
         {
             const newIndex = index > 0 ? index - 1 : length;
-            if ( this.mMode === 'template' )
-            {
-                this.mOptionArray[ newIndex ].selected = true;
-            }
-            else this.mOptionArray[ newIndex ].classList.add( 'selected' );
-
+            this.mOptionArray[ newIndex ].classList.add( 'selected' );
             this.mPointer.style.transform = `translate3d(0, ${newIndex*this.mItemHeight}px, 0)`;
         }
+    }
+
+    connectedCallback()
+    {
+        this.mOptionArray = Array.from( this.mOptions.querySelectorAll( '.selector__item' ) );
+        for ( const elem of this.mOptionArray )
+        {
+            elem.addEventListener( 'click', e => this.handleClick( e ) );
+        }
+        console.log( `SelectorBase::connectedCallback, option array len: ${this.mOptionArray.length}`);
     }
 }
  
