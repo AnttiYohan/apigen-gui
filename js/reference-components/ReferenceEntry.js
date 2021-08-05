@@ -3,7 +3,7 @@ import
     referenceValues
 } from '../dtos.js';
 import { WCBase } from '../WCBase.js';
-import { MultiSelect } from '../MultiSelect.js';
+import { MultiEntry } from '../MultiEntry.js';
 
 /**
  * This is an singluar entry element
@@ -47,12 +47,7 @@ class ReferenceEntry extends WCBase
         this.setupTemplate
         (`<link rel='stylesheet' href='assets/css/style.css'>
           <div class='reference'>
-            <multi-select data-group='[
-                "id",
-                "title",
-                "author_id",
-                "recipe_id"
-            ]'></multi-select>
+            <multi-entry data-dir='wrap'></multi-entry>
           </div>`);
         
         this.setupStyle
