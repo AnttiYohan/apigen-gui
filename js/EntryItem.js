@@ -24,19 +24,24 @@ class EntryItem extends WCBase
         `:host { display: inline; }
         .item {
             display: inline-flex;
-            border-radius: 8px;
+            border-radius: 20px;
             border: 2px solid rgba(255, 240, 245, 0.75);
             background-color: #446;
-            align-items: center;
+            padding: 4px;
+            margin: 4px;
         }
         .item__value {
-            display: inline;
-            padding: 4px;
             color: #fff;
+            margin-left: 3px;
+            transform: translate3d(0, -.25px, 0);
         }
         .button--remove-small {
+            cursor: pointer;
             width: 18px;
             height: 18px;
+            border: none;
+            margin-left: 3px;
+            background-color: transparent;
             background-repeat: no-repeat;
             background-size: cover;
             background-image: url('assets/img/icon-delete-duo.svg');
