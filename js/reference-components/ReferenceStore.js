@@ -114,10 +114,18 @@ class ReferenceStore extends StoreComponent
         console.log( '<reference-store> connected' );
         this.emit( 'reference-store-connected' );
 
+        const r = [
+            {
+
+            },
+            {
+
+            }
+        ];
         /**
          * Populate the field store
          */
-        for ( const reference of this.mReferences )
+        for ( const reference of r )
         {
             this.addReference( reference );
         }
