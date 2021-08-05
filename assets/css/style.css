@@ -253,9 +253,14 @@
     0 1px 4px 1px rgba(255, 255, 255, .26);
 }
 .component__header {
-    font-size: 14px;
+    font-size: 18px;
     text-transform: uppercase;
-    font-weight: 600;    
+    font-weight: 500;    
+}
+.component__label {
+    font-size: 14px;
+    color: #fff;
+    margin-right: 8px;
 }
 .component__tab {
     min-width: 32px;
@@ -428,14 +433,24 @@
     display: grid;
     grid-template-columns: 50% 50%;
 }
-
+.toggle__label {
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    width: var(--toggle-width);
+    height: var(--toggle-height);
+}
 .toggle__input {
     width: 0;
     height: 0;
     appearance: none;
 }
-.toggle__label {
-    position: relative;
+.toggle__slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     width: var(--toggle-width);
     height: var(--toggle-height);
     border: var(--toggle-border) solid var(--toggle-border-color);
@@ -448,20 +463,20 @@
     transition: background-color 500ms ease;
     outline: none;
 }
-.toggle__input:focus ~.toggle__label {
+.toggle__input:focus ~.toggle__slider {
     outline: 1px dashed rgba(255, 255, 255, .33);
 }
-.toggle__input:checked ~ .toggle__label {
+.toggle__input:checked ~ .toggle__slider {
     background-color: var(--toggle-on-color);
 }
-.toggle__label::after {
-    --switch-leap: calc(var(--toggle-width) - var(--size));
+.toggle__slider::after {
+    --switch-leap: calc(var(--toggle-width) - var(--size) - var(--borders) * 2);
     --borders: calc(var(--toggle-border) * 2);
     --size: calc(var(--toggle-height) - var(--borders) * 2);
     content: '';
     position: absolute;
-    top: var(--borders);
-    left: var(--borders);
+    top: var(--toggle-border);
+    left: var(--toggle-border);
     width: var(--size);
     height: var(--size);
     border-radius: 50%;
@@ -469,9 +484,9 @@
     box-shadow: 
     inset 0 -6px 10px -4px rgba(64, 0, 0, .25),
     0 2px 4px -2px rgba(0, 0, 0, .25);
-    transform: translate3d(var(--switch-leap), 0, 0);
+    transform: translate3d(0, 0, 0);
     transition: transform 200ms ease;
 }
-.toggle__input:checked ~ .toggle__label::after {
-    transform: translate3d(0, 0, 0);
+.toggle__input:checked ~ .toggle__slider::after {
+    transform: translate3d(var(--switch-leap), 0, 0);
 }
