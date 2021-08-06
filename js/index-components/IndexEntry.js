@@ -95,7 +95,7 @@ class IndexEntry extends WCBase
         /**
          * Reference entry inputs
          */
-        this.mRootElement         = this.shadowRoot.querySelector( '.reference' );
+        this.mRootElement         = this.shadowRoot.querySelector( '.index' );
         this.mFieldsInput         = this.shadowRoot.querySelector( 'multi-entry' );
         this.mTypeInput           = this.shadowRoot.querySelector( 'list-selector' );
         const removeButton        = this.shadowRoot.querySelector( '.component__action--remove' );
