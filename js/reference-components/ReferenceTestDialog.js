@@ -70,11 +70,22 @@ import { TestDialogBase } from '../TestDialogBase.js';
  * - test result display ( text, icons, colors etc. )
  * 
  */
-class ReferenceTestDialog extends WCBase
+class ReferenceTestDialog extends TestDialogBase
 {
     constructor()
     {
-        super( { title: 'Table References' } ); 
+        const template =
+        `<div class='reference'></div>`;
+
+        const style = 
+        `.reference {
+            flex-basis: 100px;
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            padding: 6px;
+        }`;
+        super( { title: 'Table References', template, style } ); 
     }
 
     // ----------------------------------------------
