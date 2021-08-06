@@ -114,9 +114,11 @@ class SelectorBase extends WCBase
             outline: none;
             border: 2px solid transparent;
             transition: border-color 300ms ease;
+            background-size: 14px;
             background-repeat: no-repeat;
-            background-position-x: right;
-            background-image: url('assets/img/icon_undo.svg');
+            background-position-x: calc(100% - 6px);
+            background-position-y: center;
+            background-image: url('assets/img/icon_selector.svg');
         }
         .selector:focus {
             border-color: rgba(255, 255, 255, .67);
@@ -216,24 +218,6 @@ class SelectorBase extends WCBase
             }
         };
 
-        /*
-        this.mSelector.addEventListener( 'focusout', e =>
-        {
-            // - check focus
-            console.log( `SelectorBase focusout, t: ${e.target.classList}`);
-
-            // - has focus within?
-            const res = this.shadowRoot.querySelectorAll( ':focus-within' );
-
-            // -
-            console.log( `Focus within amt: ${res.length}`);
-
-            if ( res.length === 0 )
-            {
-                this.mOptions.classList.remove( 'open' );
-            }
-        });*/
-
         this.mSelector.addEventListener( 'focus', e => 
         {
             focus = true;
@@ -256,6 +240,7 @@ class SelectorBase extends WCBase
         e.preventDefault();
         e.stopPropagation();
         console.log( `Option clicked: ${e.target.dataset.enum}` );
+        this.setSelected( e.target.dataset.enum );
         this.mCurrent.textContent = e.target.dataset.enum;
         this.mOptions.classList.remove( 'open' );
     }
@@ -281,6 +266,16 @@ class SelectorBase extends WCBase
         }
 
         return null;
+    }
+
+    setSelected( value )
+    {
+        for ( const elem of this.mOptionArray )
+        {
+            elem.dataset.enum === value 
+            ? elem.classList.add( 'selected' )
+            : elem.classList.remove( 'selected' );
+        }
     }
 
     down()
@@ -334,6 +329,11 @@ class SelectorBase extends WCBase
             this.mOptionArray[ newIndex ].classList.add( 'selected' );
             this.mPointer.style.transform = `translate3d(0, ${newIndex*this.mItemHeight}px, 0)`;
         }
+    }
+
+    get value()
+    {
+        return this.mCurrent.textContent;
     }
 
     connectedCallback()
