@@ -50,20 +50,27 @@ class TestDialogBase extends WCBase
                         </div>
                         <p class='response__message'>
                         </p>
-                        <div class='response__indicator-area'>
-                            <div class='response__indicator indicator--pass'></div>
-                            <div class='response__indicator indicator--fail'></div>
-                        </div>
                     </div>
+                    ${'template' in options ? options.template : ''}
                     <div class='test__controls'>
                         <div class='control--last-pass-state'>
                         </div>
                     </div>
                 </div>
                 <div class='test__body--request'>
-                    <div class='request__button-area'>
-                        <button class='request__button button--reset'></button>
-                        <button class='request__button button--run'></button>
+                    <div class='response__indicator-area'>
+                        <div class='inline'>
+                            <div class='response__indicator indicator--pass'></div>
+                            <p class='inline__label'>pass</p>
+                        </div>
+                        <div class='inline'>
+                            <div class='response__indicator indicator--fail'></div>
+                            <p class='inline__label'>fail</p>
+                        </div>
+                        <div class='request__button-area'>
+                            <button class='request__button button--reset'></button>
+                            <button class='request__button button--run'></button>
+                        </div>    
                     </div>
                     <div class='request__option-area'>
                         <div class='request__progress'></div>
@@ -80,7 +87,7 @@ class TestDialogBase extends WCBase
             flex-direction: column;
             width: ${width}px;
             height: ${height}px;
-            border-radius: ${height / 2}px;
+            border-radius: 48px;
             border: 6px solid rgba(255, 240, 245, 0.75);
             background-color: #446;
             padding: 4px;
@@ -99,6 +106,7 @@ class TestDialogBase extends WCBase
         }
         .test__signal {
             width: 64px;
+            min-height: 12px;
             background-repeat: no-repeat;
             background-size: 12px;
             background-color: transparent;
@@ -117,18 +125,22 @@ class TestDialogBase extends WCBase
             display: flex;
         }
         .test__body--left {
+            flex-basis: 100%;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
         }
         .test__response {
+            flex-basis: 175px;
             display: flex;
+            margin-left: 4px;
         }
         .response__action-area {
+            flex-basis: 32px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            width: 32px;
         }
         .response__action {
             cursor: pointer;
@@ -144,7 +156,7 @@ class TestDialogBase extends WCBase
         .response__message {
             flex-basis: 100%;
             padding: 4px;
-            border-radius: 4px;
+            border-radius: 6px;
             background-color: #f8f2e9;
             border: 1px solid rgba(64, 0, 28, 0.25);
             box-shadow:
@@ -154,13 +166,32 @@ class TestDialogBase extends WCBase
             0 -5px 5px -2px rgba(32, 0, 8, .25);
         }
         .response__indicator-area {
+            flex-basis: 175px;
             display: flex;
             flex-direction: column;
-            justify-content: space-evenly;
             align-items: center;
-            width: 32px;
+        }
+        .inline {
+            flex-basis: 20%;
+            flex-grow: 0;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            max-width: 110px;
+        }
+        .inline__label {
+            margin-left: 4px;
+            color: #fff;
+            opacity: 0.12;
+            height: 21px;
+            text-align: center;
+        }
+        .inline__label.active {
+            opacity: 1;
         }
         .response__indicator {
+            margin: 0 8px;
             width: 24px;
             height: 24px;
             border-radius: 8px;
@@ -189,12 +220,14 @@ class TestDialogBase extends WCBase
             0 2px 4px -2px rgba(32, 0, 8, .25);
         }
         .test__controls {
+            flex-basis: 20%;
+            flex-grow: 2;
             display: flex;
-            height: 48px;
             align-items: baseline;
         }
         .control--last-pass-state {
             cursor: pointer;
+            flex-basis: 100px;
             padding-left: 6px;
             padding-right: 6px;
             height: 32px;
@@ -208,25 +241,22 @@ class TestDialogBase extends WCBase
             background-image: url('assets/img/icon_prev--filled.svg');
         }
         .test__body--request {
-            flex-basis: 112px;
-            flex-grow: 0;
+            flex-basis: 150px;
             display: flex;
             flex-direction: column;
         }
         .request__button-area {
-            flex-basis: 50%;
+            width: -webkit-fill-available;
+            margin: 0 8px;
             flex-grow: 1;
-            margin: 0 auto;
             display: flex;
-            padding: 4px;
-            justify-content: space-evenly;
             align-items: center;
         }
         .request__button {
-            --size: 32px;
             cursor: pointer;
             width: var(--action-size);
             height: var(--action-size);
+            margin: 0 4px;
             outline: none;
             border-radius: calc(var(--action-size) / 2);
             border: 1px solid rgba(255, 255, 245, .6);
