@@ -23,6 +23,11 @@ class ActionSettings extends WCBase
         // - Setup the ShadowDOM and possible local styles
         // -----------------------------------------------
 
+        /**
+         * Pass this serialized array
+         * to the list-selectors, which will
+         * use the values as drop down options
+         */
         const group = '["cascade","remove","none"]';
 
         this.attachShadow( { mode: 'open' } );
@@ -44,7 +49,6 @@ class ActionSettings extends WCBase
             position: relative;
             display: flex;
             align-items: center;
-            min-height: ${min_height}px;
             min-width: 195px;
             max-width: 280px;
             justify-content: space-between;
@@ -114,18 +118,24 @@ class ActionSettings extends WCBase
             align-self: stretch;
             align-items: flex-end;
             margin-right: 4px;
-        }
-        ${'style' in options ? options.style : ''}`);
+        }`);
 
+        /**
+         * Map the event action inputs
+         */
         this.mUpdateAction = this.shadowRoot.querySelector( '.action--update list-selector' );
         this.mDeleteAction = this.shadowRoot.querySelector( '.action--delete list-selector' );
 
     }
 
     /**
-     * Return the title
+     * Return the action state object
      * 
-     * @return {string}
+     * properties:
+     * - on_update : string
+     * - on_delete : string
+     * 
+     * @return {object}
      */
     get value()
     {
@@ -141,6 +151,11 @@ class ActionSettings extends WCBase
     // - Lifecycle callbacks
     // ----------------------------------------------
 
+    /**
+     * Broadcast component's 'connected' event
+     * ------
+     * @emits action-settings-connected
+     */
     connectedCallback()
     {
         console.log( '<action-settings> connected' );
@@ -150,7 +165,6 @@ class ActionSettings extends WCBase
     disconnectedCallback()
     {
         console.log( '<action-settings> disconnected' );
-        //this.emit( 'schema-entry-removed' );
     }
 }
  
