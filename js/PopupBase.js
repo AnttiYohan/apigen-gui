@@ -42,9 +42,11 @@ class PopupBase extends WCBase
             outline: none;
             border: 2px solid transparent;
             transition: border-color 300ms ease;
+            background-size: 18px;
             background-repeat: no-repeat;
-            background-position-x: right;
-            background-image: url('assets/img/icon_undo.svg');
+            background-position-x: calc(100% - 6px);
+            background-position-y: 50%;
+            background-image: url('assets/img/icon_popup.svg');
         }
         .popup:focus {
             border-color: rgba(255, 255, 255, .67);
