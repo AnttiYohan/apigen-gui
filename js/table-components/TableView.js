@@ -1,5 +1,6 @@
 import { WCBase } from "../WCBase.js";
 import { FieldStore } from "../field-components/FieldStore.js";
+import { IndexStore } from "../index-components/IndexStore.js";
 import { ReferenceStore } from "../reference-components/ReferenceStore.js";
 import { deleteChildren } from '../util/elemfactory.js';
 
@@ -7,7 +8,14 @@ import { deleteChildren } from '../util/elemfactory.js';
  * This is the TableView, the view where a db schema
  * table may me created and modified
  * 
- * contains:
+ * -------
+ * Features:
+ * 
+ * -------
+ * Usage:
+ * 
+ * -------
+ * properties:
  * - field store 
  * - reference store 
  * - index store
@@ -33,6 +41,7 @@ class TableView extends WCBase
             </header>
             <field-store>Fields</field-store>
             <reference-store>References</reference-store>
+            <index-store>Indices</index-store>
         </div>`
         );
 
@@ -56,6 +65,20 @@ class TableView extends WCBase
             font-size: 18px;
             font-weight: 450;
         }`);
+
+        this.mFieldStore     = this.shadowRoot.querySelector( 'field-store' );
+        this.mReferenceStore = this.shadowRoot.querySelector( 'reference-store' );
+        this.mIndexStore     = this.shadowRoot.querySelector( 'index-store' );
+
+        /**
+         * Check table integrity
+         * 
+         * integrity-check button
+         */
+
+        /**
+         * Save table button
+         */
     }
 
     connectedCallback()
