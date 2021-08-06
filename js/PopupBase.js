@@ -174,6 +174,18 @@ class PopupBase extends WCBase
                     this.open();
                 }
             }
+            /**
+             * ESC is pressed,
+             * the intended outcomes:
+             * 1. Open the popup display if not open
+             * 2. Close the popup display if open,
+             * and the active element is the display
+             */
+            else
+            if ( e.keyCode === this.KEY_ESC && this.isOpen() )
+            {
+                this.close();
+            }
     
         };
 
