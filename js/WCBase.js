@@ -7,6 +7,7 @@ class WCBase extends HTMLElement
     {
         super();
         this.KEY_ENTER = 13;
+        this.KEY_ESC   = 27;
         this.KEY_SPACE = 32;
         this.KEY_UP    = 38;
         this.KEY_DOWN  = 40;
