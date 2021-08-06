@@ -13,6 +13,7 @@ class ReferenceStore extends StoreComponent
     {
         const template = 
        `<div class='component__create'>
+            <p class='component__label'>New Reference</p>
             <button class='component__action--create'></button> 
         </div>`;
 
@@ -50,6 +51,10 @@ class ReferenceStore extends StoreComponent
                 this.mReferences.push( reference );
             }
         }
+
+        const createButton = this.shadowRoot.querySelector( '.component__action--create' );
+        createButton.addEventListener( 'click', e => this.addReference() );
+
     }
 
     /**
@@ -101,7 +106,7 @@ class ReferenceStore extends StoreComponent
         return '';
     }
     
-    addReference( reference )
+    addReference( reference = {} )
     {
         this.addEntry( new ReferenceEntry( reference ) );
     }
@@ -116,10 +121,12 @@ class ReferenceStore extends StoreComponent
 
         const r = [
             {
-
-            },
-            {
-
+                available_tables: [
+                    'user',
+                    'recipe',
+                    'product',
+                    'step'
+                ]
             }
         ];
         /**
