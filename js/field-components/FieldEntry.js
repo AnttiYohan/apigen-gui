@@ -12,15 +12,21 @@ import { ConstraintSelector} from './ConstraintSelector.js';
 
 
 /**
- * This is an singluar entry element
- * used in the FieldStore
- * Data stored:
- * - field id
- * - field key/name
- * - field type
- * - field size
- * - field constraints
- * - field references
+ * This is a singluar 'field' entry element.
+ * 'Field' denotes a field or a column
+ * of a database table.
+ * FieldEntry stores the properties of one such field.
+ * ---------
+ * Usage:
+ * FieldEntry entities are intended to be stored and managed
+ * by one FieldStore object.
+ * ---------
+ * Properties:
+ * - id          : integer            *optional, immutable, hidden
+ * - type        : string
+ * - size        : integer            *optional
+ * - constraints : map
+ * - primary_key : boolean
  * 
  *  
  * @emits field-entry-connected
@@ -39,7 +45,7 @@ class FieldEntry extends WCBase
         this.mType        = '';
         this.mSize        = 0;
         this.mConstraints = new Map();
-        this.mReferences  = [];
+        this.mPrimaryKey  = false;
 
         /**
          * Check for id
@@ -68,8 +74,7 @@ class FieldEntry extends WCBase
             <constraint-selector></constraint-selector>
             <toggle-switch data-hide='true'></toggle-switch>
             <button class='component__action--remove'></button>
-        </div>`
-        );
+        </div>`);
         
         this.setupStyle(
         `.field {
@@ -137,6 +142,16 @@ class FieldEntry extends WCBase
     // --------------------------------------
 
     /**
+     * Returns the optional id,
+     * if it was set at construction.
+     * @return {number}
+     */
+    get id()
+    {
+        return this.mId;
+    }
+
+    /**
      * Returns the field's name
      * @return {string} field name
      */
@@ -197,8 +212,8 @@ class FieldEntry extends WCBase
     {
         return {
 
-            id:          this.mId,
-            name:        this.mName,
+            id:          this.id,
+            name:        this.name,
             type:        this.type,
             size:        this.size,
             constraints: this.constraints,
@@ -208,33 +223,32 @@ class FieldEntry extends WCBase
     }
     
     /**
-     * Animate the destruction
-     * and call HTMLElement.remove()
+     * Prepary for element destruction.
+     * Set the remove-flag, and initiate the
+     * removal transition.
      */
     remove()
     {
         this.mRemoveFlag = true;
         this.mRootElement.classList.add( 'remove' );
-        // - set time out
-        //setTimeout( super.remove, 500 );
-        //super.remove();
     }
 
+    /**
+     * Handler the transitionend events,
+     * checks if the transition was associated with
+     * the element removal process.
+     * -------
+     * If the remove button was pressed, the element
+     * is removed.
+     * -------
+     * @param {Event} e 
+     */
     handleTransitionEnd( e )
     {
-        console.log( `TransitionEnd, elem: ${e.pseudoElement}, property: ${e.propertyName}` );
-
         if ( this.mRemoveFlag )
         {
-            const opacity = this.mRootElement.style.opacity;
-            console.log( `Opacity found, ${opacity}` );
             super.remove();
         }
-        /*
-        if ( e.propertyName === 'height' )
-        {
-
-        }*/
     }
     // ----------------------------------------------
     // - Lifecycle callbacks
@@ -245,18 +259,12 @@ class FieldEntry extends WCBase
         console.log( "<field-entry> connected" );
         this.emit( 'field-entry-connected' );
         this.mRemoveFlag = false;
-
-        const height = this.offsetHeight;
-        console.log(`FieldEntry calculated height: ${height}`);
-
-        //this.mRootElement.style.height = `${height}px`;
         this.mRootElement.classList.remove( 'create' );
     }
 
     disconnectedCallback()
     {
         console.log( '<field-entry> disconnected' );
-        //this.emit( 'schema-entry-removed' );
     }
 }
  
