@@ -61,12 +61,13 @@ class FieldEntry extends WCBase
         this.attachShadow( { mode: 'open' } );
         this.setupTemplate(
        `<link rel='stylesheet' href='assets/css/style.css'>
-        <div class='field'>
+        <div class='field create'>
             <input class='field__name' type='text'>
             <type-selector></type-selector>
             <input class='field__size' type='number'>
             <constraint-selector></constraint-selector>
             <toggle-switch data-hide='true'></toggle-switch>
+            <button class='component__action--remove'></button>
         </div>`
         );
         
@@ -78,6 +79,17 @@ class FieldEntry extends WCBase
             min-height: 48px;
             background-color: #446;
             box-shadow: inset 0 8px 10px -4px rgba(255, 250, 240, 0.33);
+            opacity: 1;
+            margin-bottom: 0px;
+            transform-origin: top;
+            transition: transform 500ms ease, opacity 500ms ease, margin-bottom 500ms ease;
+        }
+        .field.create,
+        .field.remove {
+            /*height: 0px;*/
+            opacity: 0;
+            margin-bottom: -100%;
+            transform: scaleY(0.05);
         }
         .field__name {
             min-width: 128px;
@@ -106,13 +118,78 @@ class FieldEntry extends WCBase
         /**
          * The applied constraint icons
          */
+        this.mRootElement      = this.shadowRoot.querySelector( '.field' );
         this.mConstraintIcons  = this.shadowRoot.querySelector( '.field__constraint-icons' );
         this.mNameInput        = this.shadowRoot.querySelector( '.field__name' );
         this.mSizeInput        = this.shadowRoot.querySelector( '.field__size' );
+        this.mTypeInput        = this.shadowRoot.querySelector( 'type-selector' );
+        this.mConstraintInput  = this.shadowRoot.querySelector( 'constraint-selector' );
+        const removeButton     = this.shadowRoot.querySelector( '.component__action--remove' );
+        
+        this.mRootElement.addEventListener( 'transitionend', e => this.handleTransitionEnd( e ) );
+        removeButton.addEventListener( 'click', e => this.remove() );
+    }
+
+    // --------------------------------------
+    // -
+    // - Getters for field properties
+    // -
+    // --------------------------------------
+
+    /**
+     * Returns the field's name
+     * @return {string} field name
+     */
+    get name()
+    {
+        return this.mNameInput.value;
     }
 
     /**
-     * Return the image and the text content
+     * Returns the field's type
+     * @return {string}
+     */
+    get type()
+    {
+        return this.mTypeInput.value;
+    }
+
+    /**
+     * Returns the field's size (optional)
+     * @return {number}
+     */
+    get size()
+    {
+        return this.mSizeInput.value;
+    }
+
+    /**
+     * Returns the field's constraints
+     * @return {Map}
+     */
+    get constraints()
+    {
+        return this.mConstraintInput.value;
+    }
+
+    /**
+     * Returns the field's primary ket state
+     * @return {boolean}
+     */
+    get primaryKey()
+    {
+        return this.mPrimaryKeyInput.value;
+    }
+
+    /**
+     * Return the field value
+     * properties:
+     * - id             *optional
+     * - name
+     * - type
+     * - size           *optional
+     * - constraints
+     * - primary_key
      * 
      * @return {object}
      */
@@ -120,11 +197,45 @@ class FieldEntry extends WCBase
     {
         return {
 
-            id:     this.mId,
-            name:   this.mName
-        }
+            id:          this.mId,
+            name:        this.mName,
+            type:        this.type,
+            size:        this.size,
+            constraints: this.constraints,
+            primary_key: this.primaryKey
+
+        };
     }
     
+    /**
+     * Animate the destruction
+     * and call HTMLElement.remove()
+     */
+    remove()
+    {
+        this.mRemoveFlag = true;
+        this.mRootElement.classList.add( 'remove' );
+        // - set time out
+        //setTimeout( super.remove, 500 );
+        //super.remove();
+    }
+
+    handleTransitionEnd( e )
+    {
+        console.log( `TransitionEnd, elem: ${e.pseudoElement}, property: ${e.propertyName}` );
+
+        if ( this.mRemoveFlag )
+        {
+            const opacity = this.mRootElement.style.opacity;
+            console.log( `Opacity found, ${opacity}` );
+            super.remove();
+        }
+        /*
+        if ( e.propertyName === 'height' )
+        {
+
+        }*/
+    }
     // ----------------------------------------------
     // - Lifecycle callbacks
     // ----------------------------------------------
@@ -133,6 +244,13 @@ class FieldEntry extends WCBase
     {
         console.log( "<field-entry> connected" );
         this.emit( 'field-entry-connected' );
+        this.mRemoveFlag = false;
+
+        const height = this.offsetHeight;
+        console.log(`FieldEntry calculated height: ${height}`);
+
+        //this.mRootElement.style.height = `${height}px`;
+        this.mRootElement.classList.remove( 'create' );
     }
 
     disconnectedCallback()
