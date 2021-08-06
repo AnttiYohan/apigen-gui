@@ -28,6 +28,9 @@ class TestDialogBase extends WCBase
     {
         super();
 
+        const width = 600;
+        const height = 400;
+
         this.attachShadow( { mode: 'open' } );
         this.setupTemplate(
        `<link rel='stylesheet' href='assets/css/style.css'>
