@@ -1,13 +1,13 @@
 import { SelectorBase } from '../SelectorBase.js';
 
 /**
- * This is a base class for a dropdown selector
+ * This is a drop down menu for MySQL table field types
  */
 class TypeSelector extends SelectorBase
 {
     constructor()
     {
-        const list = [
+        super({ list: [
 
             'int',
             'bit',
@@ -20,17 +20,26 @@ class TypeSelector extends SelectorBase
             'timestamp',
             'mediumtext'
 
-        ];
+        ]});
 
-        super({ list });
     }
 
     // ----------------------------------------------
     // - Lifecycle callbacks
     // ----------------------------------------------
 
+    /**
+     * Call the base class connectedCallback(), in order
+     * for the base class to parse the DOM after it is
+     * created and properly conneceted
+     * 
+     * Emit the component's 'connected' event
+     * -------
+     * @emits type-selector-connected
+     */
     connectedCallback()
     {
+        super.connectedCallback();
         console.log( '<type-selector> connected' );
         this.emit( 'type-selector-connected' );
     }
@@ -38,7 +47,6 @@ class TypeSelector extends SelectorBase
     disconnectedCallback()
     {
         console.log( '<type-selector> disconnected' );
-        //this.emit( 'schema-entry-removed' );
     }
 }
  
