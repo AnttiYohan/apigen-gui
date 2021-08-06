@@ -1,11 +1,18 @@
 import { StoreComponent } from "../StoreComponent.js";
 import validate from "../util/validator.js";
+import { IndexEntry } from './IndexEntry.js';
 
 /**
  * This is a store for IndexEntry objects.
  * The indices in this store represent
- * one database table, and its indices.
+ * the indices of a database table.
+ * ---------
+ * Usage:
+ * IndexStore object is intended to be used
+ * inside a table context, for instance TableView.
  * 
+ * One table has exactly one index store
+ * ---------
  * properties:
  * - indices : array
  * 
@@ -49,7 +56,7 @@ class IndexStore extends StoreComponent
         }
 
         const createButton = this.shadowRoot.querySelector( '.component__action--create' );
-        createButton.addEventListener( 'click', e => this.addReference() );
+        createButton.addEventListener( 'click', e => this.addIndex() );
 
     }
 
